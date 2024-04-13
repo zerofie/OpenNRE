@@ -1,15 +1,16 @@
+import os
+import json
+import numpy as np
+import torch
+import logging
+import urllib.request
+
 from . import encoder
 from . import model
 from . import framework
-import torch
-import os
-import sys
-import json
-import numpy as np
-import logging
 
 root_url = "https://thunlp.oss-cn-qingdao.aliyuncs.com/"
-default_root_path = os.path.join(os.getenv('HOME'), '.opennre')
+default_root_path = os.path.join('.opennre')
 
 def check_root(root_path=default_root_path):
     if not os.path.exists(root_path):
@@ -20,82 +21,110 @@ def check_root(root_path=default_root_path):
 
 def download_wiki80(root_path=default_root_path):
     check_root()
-    if not os.path.exists(os.path.join(root_path, 'benchmark/wiki80')):
-        os.mkdir(os.path.join(root_path, 'benchmark/wiki80'))
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/wiki80') + ' ' + root_url + 'opennre/benchmark/wiki80/wiki80_rel2id.json')
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/wiki80') + ' ' + root_url + 'opennre/benchmark/wiki80/wiki80_train.txt')
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/wiki80') + ' ' + root_url + 'opennre/benchmark/wiki80/wiki80_val.txt')
+    if not os.path.exists(os.path.join(root_path, 'benchmark\\wiki80')):
+        os.mkdir(os.path.join(root_path, 'benchmark\\wiki80'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/wiki80/wiki80_rel2id.json',
+                                   os.path.join(root_path, 'benchmark\\wiki80\\wiki80_rel2id.json'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/wiki80/wiki80_train.txt',
+                                   os.path.join(root_path, 'benchmark\\wiki80\\wiki80_train.txt'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/wiki80/wiki80_val.txt',
+                                   os.path.join(root_path, 'benchmark\\wiki80\\wiki80_val.txt'))
 
 def download_tacred(root_path=default_root_path):
     check_root()
-    if not os.path.exists(os.path.join(root_path, 'benchmark/tacred')):
-        os.mkdir(os.path.join(root_path, 'benchmark/tacred'))
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/tacred') + ' ' + root_url + 'opennre/benchmark/tacred/tacred_rel2id.json')
+    if not os.path.exists(os.path.join(root_path, 'benchmark\\tacred')):
+        os.mkdir(os.path.join(root_path, 'benchmark\\tacred'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/tacred/tacred_rel2id.json',
+                                   os.path.join(root_path, 'benchmark\\tacred\\tacred_rel2id.json'))
         logging.info('Due to copyright limits, we only provide rel2id for TACRED. Please download TACRED manually and convert the data to OpenNRE format if needed.')
 
 def download_nyt10(root_path=default_root_path):
     check_root()
-    if not os.path.exists(os.path.join(root_path, 'benchmark/nyt10')):
-        os.mkdir(os.path.join(root_path, 'benchmark/nyt10'))
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/nyt10') + ' ' + root_url + 'opennre/benchmark/nyt10/nyt10_rel2id.json')
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/nyt10') + ' ' + root_url + 'opennre/benchmark/nyt10/nyt10_train.txt')
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/nyt10') + ' ' + root_url + 'opennre/benchmark/nyt10/nyt10_test.txt')
+    if not os.path.exists(os.path.join(root_path, 'benchmark\\nyt10')):
+        os.mkdir(os.path.join(root_path, 'benchmark\\nyt10'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/nyt10/nyt10_rel2id.json',
+                                   os.path.join(root_path, 'benchmark\\nyt10\\nyt10_rel2id.json'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/nyt10/nyt10_train.txt',
+                                   os.path.join(root_path, 'benchmark\\nyt10\\nyt10_train.txt'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/nyt10/nyt10_test.txt',
+                                   os.path.join(root_path, 'benchmark\\nyt10\\nyt10_test.txt'))
 
 def download_nyt10m(root_path=default_root_path):
     check_root()
-    if not os.path.exists(os.path.join(root_path, 'benchmark/nyt10m')):
-        os.mkdir(os.path.join(root_path, 'benchmark/nyt10m'))
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/nyt10m') + ' ' + root_url + 'opennre/benchmark/nyt10m/nyt10m_rel2id.json')
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/nyt10m') + ' ' + root_url + 'opennre/benchmark/nyt10m/nyt10m_train.txt')
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/nyt10m') + ' ' + root_url + 'opennre/benchmark/nyt10m/nyt10m_test.txt')
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/nyt10m') + ' ' + root_url + 'opennre/benchmark/nyt10m/nyt10m_val.txt')
+    if not os.path.exists(os.path.join(root_path, 'benchmark\\nyt10m')):
+        os.mkdir(os.path.join(root_path, 'benchmark\\nyt10m'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/nyt10m/nyt10m_rel2id.json',
+                                   os.path.join(root_path, 'benchmark\\nyt10m\\nyt10m_rel2id.json'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/nyt10m/nyt10m_train.txt',
+                                   os.path.join(root_path, 'benchmark\\nyt10m\\nyt10m_train.txt'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/nyt10m/nyt10m_test.txt',
+                                   os.path.join(root_path, 'benchmark\\nyt10m\\nyt10m_test.txt'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/nyt10m/nyt10m_val.txt',
+                                   os.path.join(root_path, 'benchmark\\nyt10m\\nyt10m_val.txt'))
 
 def download_wiki20m(root_path=default_root_path):
     check_root()
-    if not os.path.exists(os.path.join(root_path, 'benchmark/wiki20m')):
-        os.mkdir(os.path.join(root_path, 'benchmark/wiki20m'))
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/wiki20m') + ' ' + root_url + 'opennre/benchmark/wiki20m/wiki20m_rel2id.json')
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/wiki20m') + ' ' + root_url + 'opennre/benchmark/wiki20m/wiki20m_train.txt')
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/wiki20m') + ' ' + root_url + 'opennre/benchmark/wiki20m/wiki20m_test.txt')
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/wiki20m') + ' ' + root_url + 'opennre/benchmark/wiki20m/wiki20m_val.txt')
+    if not os.path.exists(os.path.join(root_path, 'benchmark\\wiki20m')):
+        os.mkdir(os.path.join(root_path, 'benchmark\\wiki20m'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/wiki20m/wiki20m_rel2id.json',
+                                   os.path.join(root_path, 'benchmark\\wiki20m\\wiki20m_rel2id.json'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/wiki20m/wiki20m_train.txt',
+                                   os.path.join(root_path, 'benchmark\\wiki20m\\wiki20m_train.txt'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/wiki20m/wiki20m_test.txt',
+                                   os.path.join(root_path, 'benchmark\\wiki20m\\wiki20m_test.txt'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/wiki20m/wiki20m_val.txt',
+                                   os.path.join(root_path, 'benchmark\\wiki20m\\wiki20m_val.txt'))
 
 def download_wiki_distant(root_path=default_root_path):
     check_root()
-    if not os.path.exists(os.path.join(root_path, 'benchmark/wiki_distant')):
-        os.mkdir(os.path.join(root_path, 'benchmark/wiki_distant'))
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/wiki_distant') + ' ' + root_url + 'opennre/benchmark/wiki_distant/wiki_distant_rel2id.json')
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/wiki_distant') + ' ' + root_url + 'opennre/benchmark/wiki_distant/wiki_distant_train.txt')
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/wiki_distant') + ' ' + root_url + 'opennre/benchmark/wiki_distant/wiki_distant_test.txt')
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/wiki_distant') + ' ' + root_url + 'opennre/benchmark/wiki_distant/wiki_distant_val.txt')
+    if not os.path.exists(os.path.join(root_path, 'benchmark\\wiki_distant')):
+        os.mkdir(os.path.join(root_path, 'benchmark\\wiki_distant'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/wiki_distant/wiki_distant_rel2id.json',
+                                   os.path.join(root_path, 'benchmark\\wiki_distant\\wiki_distant_rel2id.json'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/wiki_distant/wiki_distant_train.txt',
+                                   os.path.join(root_path, 'benchmark\\wiki_distant\\wiki_distant_train.txt'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/wiki_distant/wiki_distant_test.txt',
+                                   os.path.join(root_path, 'benchmark\\wiki_distant\\wiki_distant_test.txt'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/wiki_distant/wiki_distant_val.txt',
+                                   os.path.join(root_path, 'benchmark\\wiki_distant\\wiki_distant_val.txt'))
 
 def download_semeval(root_path=default_root_path):
     check_root()
-    if not os.path.exists(os.path.join(root_path, 'benchmark/semeval')):
-        os.mkdir(os.path.join(root_path, 'benchmark/semeval'))
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/semeval') + ' ' + root_url + 'opennre/benchmark/semeval/semeval_rel2id.json')
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/semeval') + ' ' + root_url + 'opennre/benchmark/semeval/semeval_train.txt')
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/semeval') + ' ' + root_url + 'opennre/benchmark/semeval/semeval_test.txt')
-        os.system('wget -P ' + os.path.join(root_path, 'benchmark/semeval') + ' ' + root_url + 'opennre/benchmark/semeval/semeval_val.txt')
+    if not os.path.exists(os.path.join(root_path, 'benchmark\\semeval')):
+        os.mkdir(os.path.join(root_path, 'benchmark\\semeval'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/semeval/semeval_rel2id.json',
+                                   os.path.join(root_path, 'benchmark\\semeval\\semeval_rel2id.json'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/semeval/semeval_train.txt',
+                                   os.path.join(root_path, 'benchmark\\semeval\\semeval_train.txt'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/semeval/semeval_test.txt',
+                                   os.path.join(root_path, 'benchmark\\semeval\\semeval_test.txt'))
+        urllib.request.urlretrieve(root_url + 'opennre/benchmark/semeval/semeval_val.txt',
+                                   os.path.join(root_path, 'benchmark\\semeval\\semeval_val.txt'))
 
 def download_glove(root_path=default_root_path):
     check_root()
-    if not os.path.exists(os.path.join(root_path, 'pretrain/glove')):
-        os.mkdir(os.path.join(root_path, 'pretrain/glove'))
-        os.system('wget -P ' + os.path.join(root_path, 'pretrain/glove') +  ' ' + root_url + 'opennre/pretrain/glove/glove.6B.50d_mat.npy')
-        os.system('wget -P ' + os.path.join(root_path, 'pretrain/glove') +  ' ' + root_url + 'opennre/pretrain/glove/glove.6B.50d_word2id.json')
+    if not os.path.exists(os.path.join(root_path, 'pretrain\\glove')):
+        os.mkdir(os.path.join(root_path, 'pretrain\\glove'))
+        urllib.request.urlretrieve(root_url + 'opennre/pretrain/glove/glove.6B.50d_mat.npy',
+                                   os.path.join(root_path, 'pretrain\\glove\\glove.6B.50d_mat.npy'))
+        urllib.request.urlretrieve(root_url + 'opennre/pretrain/glove/glove.6B.50d_word2id.json',
+                                   os.path.join(root_path, 'pretrain\\glove\\glove.6B.50d_word2id.json'))
 
 def download_bert_base_uncased(root_path=default_root_path):
     check_root()
-    if not os.path.exists(os.path.join(root_path, 'pretrain/bert-base-uncased')):
-        os.mkdir(os.path.join(root_path, 'pretrain/bert-base-uncased'))
-        os.system('wget -P ' + os.path.join(root_path, 'pretrain/bert-base-uncased') + ' ' + root_url + 'opennre/pretrain/bert-base-uncased/config.json')
-        os.system('wget -P ' + os.path.join(root_path, 'pretrain/bert-base-uncased') + ' ' + root_url + 'opennre/pretrain/bert-base-uncased/pytorch_model.bin')
-        os.system('wget -P ' + os.path.join(root_path, 'pretrain/bert-base-uncased') + ' ' + root_url + 'opennre/pretrain/bert-base-uncased/vocab.txt')
+    if not os.path.exists(os.path.join(root_path, 'pretrain\\bert-base-uncased')):
+        os.mkdir(os.path.join(root_path, 'pretrain\\bert-base-uncased'))
+        urllib.request.urlretrieve(root_url + 'opennre/pretrain/bert-base-uncased/config.json',
+                                   os.path.join(root_path, 'pretrain\\bert-base-uncased\\config.json'))
+        urllib.request.urlretrieve(root_url + 'opennre/pretrain/bert-base-uncased/pytorch_model.bin',
+                                   os.path.join(root_path, 'pretrain\\bert-base-uncased\\pytorch_model.bin'))
+        urllib.request.urlretrieve(root_url + 'opennre/pretrain/bert-base-uncased/vocab.txt',
+                                   os.path.join(root_path, 'pretrain\\bert-base-uncased\\vocab.txt'))
 
 def download_pretrain(model_name, root_path=default_root_path):
-    ckpt = os.path.join(root_path, 'pretrain/nre/' + model_name + '.pth.tar')
+    ckpt = os.path.join(root_path, 'pretrain\\nre\\' + model_name + '.pth.tar')
     if not os.path.exists(ckpt):
-        os.system('wget -P ' + os.path.join(root_path, 'pretrain/nre')  + ' ' + root_url + 'opennre/pretrain/nre/' + model_name + '.pth.tar')
+        urllib.request.urlretrieve(root_url + 'opennre/pretrain/nre/' + model_name + '.pth.tar', ckpt)
 
 def download(name, root_path=default_root_path):
     if not os.path.exists(os.path.join(root_path, 'benchmark')):
@@ -125,24 +154,24 @@ def download(name, root_path=default_root_path):
 
 def get_model(model_name, root_path=default_root_path):
     check_root()
-    ckpt = os.path.join(root_path, 'pretrain/nre/' + model_name + '.pth.tar')
+    ckpt = os.path.join(root_path, 'pretrain\\nre\\' + model_name + '.pth.tar')
     if model_name == 'wiki80_cnn_softmax':
         download_pretrain(model_name, root_path=root_path)
         download('glove', root_path=root_path)
         download('wiki80', root_path=root_path)
-        wordi2d = json.load(open(os.path.join(root_path, 'pretrain/glove/glove.6B.50d_word2id.json')))
-        word2vec = np.load(os.path.join(root_path, 'pretrain/glove/glove.6B.50d_mat.npy'))
-        rel2id = json.load(open(os.path.join(root_path, 'benchmark/wiki80/wiki80_rel2id.json')))
+        wordi2d = json.load(open(os.path.join(root_path, 'pretrain\\glove\\glove.6B.50d_word2id.json')))
+        word2vec = np.load(os.path.join(root_path, 'pretrain\\glove\\glove.6B.50d_mat.npy'))
+        rel2id = json.load(open(os.path.join(root_path, 'benchmark\\wiki80\\wiki80_rel2id.json')))
         sentence_encoder = encoder.CNNEncoder(token2id=wordi2d,
-                                                     max_length=40,
-                                                     word_size=50,
-                                                     position_size=5,
-                                                     hidden_size=230,
-                                                     blank_padding=True,
-                                                     kernel_size=3,
-                                                     padding_size=1,
-                                                     word2vec=word2vec,
-                                                     dropout=0.5)
+                                              max_length=40,
+                                              word_size=50,
+                                              position_size=5,
+                                              hidden_size=230,
+                                              blank_padding=True,
+                                              kernel_size=3,
+                                              padding_size=1,
+                                              word2vec=word2vec,
+                                              dropout=0.5)
         m = model.SoftmaxNN(sentence_encoder, len(rel2id), rel2id)
         m.load_state_dict(torch.load(ckpt, map_location='cpu')['state_dict'])
         return m
@@ -150,13 +179,13 @@ def get_model(model_name, root_path=default_root_path):
         download_pretrain(model_name, root_path=root_path)
         download('bert_base_uncased', root_path=root_path)
         download('wiki80', root_path=root_path)
-        rel2id = json.load(open(os.path.join(root_path, 'benchmark/wiki80/wiki80_rel2id.json')))
+        rel2id = json.load(open(os.path.join(root_path, 'benchmark\\wiki80\\wiki80_rel2id.json')))
         if 'entity' in model_name:
             sentence_encoder = encoder.BERTEntityEncoder(
-                max_length=80, pretrain_path=os.path.join(root_path, 'pretrain/bert-base-uncased'))
+                max_length=80, pretrain_path=os.path.join(root_path, 'pretrain\\bert-base-uncased'))
         else:
             sentence_encoder = encoder.BERTEncoder(
-                max_length=80, pretrain_path=os.path.join(root_path, 'pretrain/bert-base-uncased'))
+                max_length=80, pretrain_path=os.path.join(root_path, 'pretrain\\bert-base-uncased'))
         m = model.SoftmaxNN(sentence_encoder, len(rel2id), rel2id)
         m.load_state_dict(torch.load(ckpt, map_location='cpu')['state_dict'])
         return m
@@ -164,13 +193,13 @@ def get_model(model_name, root_path=default_root_path):
         download_pretrain(model_name, root_path=root_path)
         download('bert_base_uncased', root_path=root_path)
         download('tacred', root_path=root_path)
-        rel2id = json.load(open(os.path.join(root_path, 'benchmark/tacred/tacred_rel2id.json')))
+        rel2id = json.load(open(os.path.join(root_path, 'benchmark\\tacred\\tacred_rel2id.json')))
         if 'entity' in model_name:
             sentence_encoder = encoder.BERTEntityEncoder(
-                max_length=80, pretrain_path=os.path.join(root_path, 'pretrain/bert-base-uncased'))
+                max_length=80, pretrain_path=os.path.join(root_path, 'pretrain\\bert-base-uncased'))
         else:
             sentence_encoder = encoder.BERTEncoder(
-                max_length=80, pretrain_path=os.path.join(root_path, 'pretrain/bert-base-uncased'))
+                max_length=80, pretrain_path=os.path.join(root_path, 'pretrain\\bert-base-uncased'))
         m = model.SoftmaxNN(sentence_encoder, len(rel2id), rel2id)
         m.load_state_dict(torch.load(ckpt, map_location='cpu')['state_dict'])
         return m
